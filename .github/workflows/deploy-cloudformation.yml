@@ -20,10 +20,9 @@ jobs:
 
       - name: Configure AWS CLI
         run: |
-        
           echo "[default]
           aws_access_key_id = ${{ secrets.ACCESS_KEY }}
-          aws_secret_access_key = ${{ secrets.ACCESS_KEY_SECRET }}" > /home/runner/.aws/credentials
+          aws_secret_access_key = ${{ secrets.ACCESS_KEY_SECRET }}" > ~/.aws/credentials
 
       - name: Deploy CloudFormation Stack
         run: |
