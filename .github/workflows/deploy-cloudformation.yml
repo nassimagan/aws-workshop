@@ -23,5 +23,5 @@ jobs:
         uses: aws-actions/aws-cloudformation-github-deploy@v1
         with:
           name: tekloon-test-stack
-          template: workshop4.yaml
+          template: my-template.yaml
           no-fail-on-empty-changeset: "1"
