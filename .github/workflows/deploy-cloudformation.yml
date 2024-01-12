@@ -1,45 +1,27 @@
-name: Deploy CloudFormation
+name: 'Deploy to AWS CloudFormation'
 
-on:
+on: 
   push:
-    branches:
-      - main
+    branches: [ main ]
+  
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
-
     steps:
-      - name: Use Node.js 16
-        uses: actions/setup-node@v4
-        with:
-          node-version: '16'
-
-      - name: Checkout Repository
+      - name: Checkout code from master branch
         uses: actions/checkout@v2
 
-      - name: Configure AWS CLI
-        run: |
-          echo "[default]
-          aws_access_key_id = ${{ secrets.ACCESS_KEY }}
-          aws_secret_access_key = ${{ secrets.ACCESS_KEY_SECRET }}" > ~/.aws/credentials
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.ACCESS_KEY_SECRET }}
+          aws-region: us-east-1
 
-      - name: Deploy CloudFormation Stack
-        run: |
-          aws cloudformation create-stack --stack-name MyStackName \
-          --template-body file://my-template.yaml \
-          --region us-east-1 # Replace with your desired AWS region
-
-      - name: Wait for Stack to Complete
-        run: |
-          aws cloudformation wait stack-create-complete --stack-name MyStackName \
-          --region us-east-1 # Replace with your desired AWS region
-
-      - name: Display Stack Outputs
-        run: |
-          aws cloudformation describe-stacks --stack-name MyStackName \
-          --query 'Stacks[0].Outputs' \
-          --output table \
-          --region us-east-1 # Replace with your desired AWS region
-
-    #capabilities: CAPABILITY_NAMED_IAM
+      - name: Deploy to AWS CloudFormation
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: tekloon-test-stack
+          template: workshop4.yaml
+          no-fail-on-empty-changeset: "1"
