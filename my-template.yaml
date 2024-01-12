@@ -6,7 +6,7 @@ Resources:
     Properties:
       BucketName: nasstest9876
       
-      
+    
   MyLambdaRole:
     Type: AWS::IAM::Role
     Properties:
